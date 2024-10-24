@@ -83,7 +83,17 @@ def main():
 
 if __name__ == '__main__':
 
-    # Clear the console based on the OS
+    # Clear the terminal screen for better readability of output
     os.system('cls' if os.name == 'nt' else 'clear')
+
+    # Set default figure size for the plots
+    plt.rcParams['figure.figsize'] = (8, 6)
+
+    # Set default font family and math text font for the plots
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['mathtext.fontset'] = 'dejavuserif'
+
+    # Update font size globally for plots
+    plt.rcParams.update({'font.size': 15})
 
     main()
