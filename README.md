@@ -76,11 +76,3 @@ When you're done, you can deactivate the virtual environment by running:
 ```bash
 deactivate
 ```
-
-## Contributing
-
-Feel free to open issues or contribute to the project by submitting a pull request. Make sure to follow the contributing guidelines.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
