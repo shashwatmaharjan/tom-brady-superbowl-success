@@ -93,14 +93,8 @@ def main():
     # Remove columns with NaN values
     features = features.dropna(axis=1)
 
-    # First use the predictions from year 2002 to 2005 to predict the Superbowl wins from 2006 to 2023
-    model_2002_2005 = dnn(2002, 2005, features, target, save_directory)
-
     # Second use the predictions from year 2002 to 2009 to predict the Superbowl wins from 2010 to 2023
     model_2002_2009 = dnn(2002, 2009, features, target, save_directory)
-
-    # Third use the predictions from year 2002 to 2015 to predict the Superbowl wins from 2016 to 2023
-    model_2002_2015 = dnn(2002, 2015, features, target, save_directory)
 
     # Fourth use the predictions from year 2002 to 2019 to predict the Superbowl wins from 2020 to 2023
     model_2002_2019 = dnn(2002, 2019, features, target, save_directory)
