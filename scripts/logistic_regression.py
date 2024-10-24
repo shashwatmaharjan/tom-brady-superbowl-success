@@ -31,7 +31,7 @@ def logistic_regression(train_year_start, train_year_end, features, target, save
     cm = confusion_matrix(target_test, model.predict(features_test))
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Superbowl Win', 'Superbowl Win'])
     disp.plot(cmap=plt.cm.Blues)  # Use a color map for better visuals
-    plt.title(f'Confusion Matrix for {train_year_start}-{train_year_end}')
+    plt.title(f'{train_year_start}-{train_year_end} prediction for {train_year_end+1}-2023')
     plt.savefig(os.path.join(save_directory, f'{train_year_start}_{train_year_end}.png'), bbox_inches='tight')
 
     # Write the metrics to a file
@@ -77,8 +77,6 @@ def main():
 
     # Fourth use the predictions from year 2002 to 2019 to predict the Superbowl wins from 2020 to 2023
     model_2002_2019 = logistic_regression(2002, 2019, features, target, save_directory)
-
-
 
 
 if __name__ == '__main__':
