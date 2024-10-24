@@ -1,0 +1,8 @@
+Model Metrics for training years 2002 to 2015:
+Accuracy: 50.00%
+Precision: 33.33%
+Recall: 33.33%
+F1 Score: 33.33%
+Confusion Matrix: 
+[[3 2]
+ [2 1]]
