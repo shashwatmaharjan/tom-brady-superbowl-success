@@ -1,12 +1,12 @@
-# Import necessary libraries
 import os
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 
-# Function to perform logistic regresion for particular years
-def logistic_regression(train_year_start, train_year_end, features, target):
+# Function to perform logistic regression for particular years
+def logistic_regression(train_year_start, train_year_end, features, target, save_directory):
 
     features_train = features.loc[train_year_start:train_year_end]
     target_train = target.loc[train_year_start:train_year_end]
@@ -27,14 +27,21 @@ def logistic_regression(train_year_start, train_year_end, features, target):
     # Fit the model
     model.fit(features_train, target_train)
 
-    # Print the model's metrics to percentage and two decimal places
-    print(f'Model Metrics for training years {train_year_start} to {train_year_end}:')
-    print(f'Accuracy: {accuracy_score(target_test, model.predict(features_test)):.2%}')
-    print(f'Precision: {precision_score(target_test, model.predict(features_test)):.2%}')
-    print(f'Recall: {recall_score(target_test, model.predict(features_test)):.2%}')
-    print(f'F1 Score: {f1_score(target_test, model.predict(features_test)):.2%}')
-    print(f'Confusion Matrix: \n{confusion_matrix(target_test, model.predict(features_test))}')
-    print()
+    # Plot the confusion matrix
+    cm = confusion_matrix(target_test, model.predict(features_test))
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Superbowl Win', 'Superbowl Win'])
+    disp.plot(cmap=plt.cm.Blues)  # Use a color map for better visuals
+    plt.title(f'Confusion Matrix for {train_year_start}-{train_year_end}')
+    plt.savefig(os.path.join(save_directory, f'{train_year_start}_{train_year_end}.png'), bbox_inches='tight')
+
+    # Write the metrics to a file
+    with open(os.path.join(save_directory, f'{train_year_start}_{train_year_end}.txt'), 'w') as f:
+        f.write(f'Model Metrics for training years {train_year_start} to {train_year_end}:\n')
+        f.write(f'Accuracy: {accuracy_score(target_test, model.predict(features_test)):.2%}\n')
+        f.write(f'Precision: {precision_score(target_test, model.predict(features_test)):.2%}\n')
+        f.write(f'Recall: {recall_score(target_test, model.predict(features_test)):.2%}\n')
+        f.write(f'F1 Score: {f1_score(target_test, model.predict(features_test)):.2%}\n')
+        f.write(f'Confusion Matrix: \n{confusion_matrix(target_test, model.predict(features_test))}\n')
 
     return model
 
@@ -44,6 +51,7 @@ def main():
     # Define directories
     current_directory = os.getcwd()
     data_directory = os.path.join(current_directory, 'data')
+    save_directory = os.path.join(current_directory, 'results', 'classification', 'logistic_regression')
 
     # Load the data
     data = pd.read_csv(os.path.join(data_directory, 'raw.csv'))
@@ -59,16 +67,19 @@ def main():
     features = features.dropna(axis=1)
 
     # First use the predictions from year 2002 to 2005 to predict the Superbowl wins from 2006 to 2023
-    model = logistic_regression(2002, 2005, features, target)
+    model_2002_2005 = logistic_regression(2002, 2005, features, target, save_directory)
 
     # Second use the predictions from year 2002 to 2009 to predict the Superbowl wins from 2010 to 2023
-    model = logistic_regression(2002, 2009, features, target)
+    model_2002_2009 = logistic_regression(2002, 2009, features, target, save_directory)
 
     # Third use the predictions from year 2002 to 2015 to predict the Superbowl wins from 2016 to 2023
-    model = logistic_regression(2002, 2015, features, target)
+    model_2002_2015 = logistic_regression(2002, 2015, features, target, save_directory)
 
     # Fourth use the predictions from year 2002 to 2019 to predict the Superbowl wins from 2020 to 2023
-    model = logistic_regression(2002, 2019, features, target)
+    model_2002_2019 = logistic_regression(2002, 2019, features, target, save_directory)
+
+
+
 
 if __name__ == '__main__':
 
